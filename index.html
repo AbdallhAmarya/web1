@@ -1,106 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Calculator</title>
+    <title>Calculator</title>
     <style>
         body {
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
         }
 
-        #calculator {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        h1 {
             text-align: center;
         }
 
-        input {
+        .calculator-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .display {
+            height: 50px;
             width: 100%;
-            padding: 10px;
+            text-align: end;
             margin-bottom: 10px;
+            padding: 10px;
             box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.5em;
         }
 
-        button {
-            width: 48px;
-            height: 48px;
-            font-size: 18px;
+        .row {
+            overflow: hidden;
+        }
+
+        .button {
+            float: left;
+            height: 50px;
+            width: 20%;
             margin: 5px;
+            background-color: #f5923e;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.2em;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
         }
 
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
+        .button:hover {
+            background-color: #fcb679;
         }
 
-        .clear {
-            background-color: #d9534f;
-            color: #fff;
+        .button.clear {
+            background-color: #dc3545;
         }
     </style>
 </head>
 <body>
+    <div class="calculator-container">
+        <h1>Calculator</h1>
+        <div class="display" id="display">0</div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('Math.sqrt(')">√</button>
+            <button type="button" class="button" onclick="appendToDisplay('(')">(</button>
+            <button type="button" class="button" onclick="appendToDisplay(')')">)</button>
+            <button type="button" class="button" onclick="appendToDisplay('Math.pow(10,')">10^x</button>
+        </div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('Math.log10(')">log</button>
+            <button type="button" class="button" onclick="appendToDisplay('Math.log(')">ln</button>
+            <button type="button" class="button" onclick="appendToDisplay('Math.E')">e</button>
+            <button type="button" class="button" onclick="appendToDisplay('1/')">1/x</button>
+        </div>
 
-<div id="calculator">
-    <input type="text" id="display" disabled>
-    <div class="row">
-        <button onclick="appendValue('7')">7</button>
-        <button onclick="appendValue('8')">8</button>
-        <button onclick="appendValue('9')">9</button>
-        <button onclick="appendValue('/')">/</button>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('Math.abs(')">|x|</button>
+            <button type="button" class="button" onclick="appendToDisplay('Math.exp(')">exp</button>
+            <button type="button" class="button" onclick="appendToDisplay('%')">%</button>
+            <button type="button" class="button clear " onclick="clearDisplay()">C</button>
+        </div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('Math.PI')">π</button>
+            <button type="button" class="button" onclick="appendToDisplay('**2')">x²</button>
+            <button type="button" class="button" onclick="appendToDisplay('')">^</button>
+            <button type="button" class="button " onclick="appendToDisplay('/')">/</button>
+        </div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('7')">7</button>
+            <button type="button" class="button" onclick="appendToDisplay('8')">8</button>
+            <button type="button" class="button" onclick="appendToDisplay('9')">9</button>
+            <button type="button" class="button " onclick="appendToDisplay('*')">x</button>
+        </div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('4')">4</button>
+            <button type="button" class="button" onclick="appendToDisplay('5')">5</button>
+            <button type="button" class="button" onclick="appendToDisplay('6')">6</button>
+            <button type="button" class="button " onclick="appendToDisplay('-')">-</button>
+        </div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('1')">1</button>
+            <button type="button" class="button" onclick="appendToDisplay('2')">2</button>
+            <button type="button" class="button" onclick="appendToDisplay('3')">3</button>
+            <button type="button" class="button " onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div class="row">
+            <button type="button" class="button" onclick="appendToDisplay('0')">0</button>
+            <button type="button" class="button" onclick="appendToDisplay('.')">.</button>
+            <button type="button" class="button clear"  onclick="calculateResult()">=</button>
+            <button type="button" class="button clear" onclick="eraseLast()">←</button>
+        </div>
     </div>
-    <div class="row">
-        <button onclick="appendValue('4')">4</button>
-        <button onclick="appendValue('5')">5</button>
-        <button onclick="appendValue('6')">6</button>
-        <button onclick="appendValue('*')">*</button>
-    </div>
-    <div class="row">
-        <button onclick="appendValue('1')">1</button>
-        <button onclick="appendValue('2')">2</button>
-        <button onclick="appendValue('3')">3</button>
-        <button onclick="appendValue('-')">-</button>
-    </div>
-    <div class="row">
-        <button onclick="appendValue('0')">0</button>
-        <button onclick="appendValue('.')">.</button>
-        <button onclick="calculate()">=</button>
-        <button onclick="appendValue('+')">+</button>
-    </div>
-    <div class="row">
-        <button onclick="clearDisplay()" class="clear">C</button>
-    </div>
-</div>
 
-<script>
-    function appendValue(value) {
-        document.getElementById('display').value += value;
-    }
+    <script>
+        let display = document.getElementById('display');
 
-    function calculate() {
-        try {
-            document.getElementById('display').value = eval(document.getElementById('display').value);
-        } catch (error) {
-            document.getElementById('display').value = 'Error';
+        function appendToDisplay(value) {
+            if (display.textContent === '0' || display.textContent === 'Error') {
+                display.textContent = value;
+            } else {
+                display.textContent += value;
+            }
+        }
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function calculateResult() {
+            try {
+                display.textContent = eval(display.textContent);
+            } catch (error) {
+                display.textContent = 'Error';
+            }
+        }
+
+        function eraseLast() {
+        let currentText = display.textContent;
+        if (currentText !== 'Error') {
+            display.textContent = currentText.slice(0, -1); // Remove the last character
+            if (display.textContent === '') {
+                display.textContent = '0';
+            }
         }
     }
-
-    function clearDisplay() {
-        document.getElementById('display').value = '';
-    }
-</script>
-
+    </script>
 </body>
 </html>
