@@ -8,5 +8,5 @@ git init
 git add .
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/AbdallhAmarya/web1
+git remote add origin https://github.com/AbdallhAmarya?tab=repositories.git
 git push -u origin main
